@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/activeMQ/activeMQ.iml" filepath="$PROJECT_DIR$/activeMQ/activeMQ.iml" />
+      <module fileurl="file://$PROJECT_DIR$/baseCommon/baseCommon.iml" filepath="$PROJECT_DIR$/baseCommon/baseCommon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/design/com.gordon.design.iml" filepath="$PROJECT_DIR$/design/com.gordon.design.iml" />
+      <module fileurl="file://$PROJECT_DIR$/echarts/echarts.iml" filepath="$PROJECT_DIR$/echarts/echarts.iml" />
+      <module fileurl="file://$PROJECT_DIR$/elJSTL/elJSTL.iml" filepath="$PROJECT_DIR$/elJSTL/elJSTL.iml" />
+      <module fileurl="file://$PROJECT_DIR$/freemarker/freemarker.iml" filepath="$PROJECT_DIR$/freemarker/freemarker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jasperReport/jasperReport.iml" filepath="$PROJECT_DIR$/jasperReport/jasperReport.iml" />
+      <module fileurl="file://$PROJECT_DIR$/redis/redis.iml" filepath="$PROJECT_DIR$/redis/redis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shiro/shiro.iml" filepath="$PROJECT_DIR$/shiro/shiro.iml" />
+    </modules>
+  </component>
+</project>

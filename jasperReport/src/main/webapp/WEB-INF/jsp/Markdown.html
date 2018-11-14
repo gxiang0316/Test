@@ -1,0 +1,65 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+
+
+<h4><a href="#ireport软件制作jasper文件时注意事项" id="ireport软件制作jasper文件时注意事项">IREPORT软件制作.jasper文件时注意事项</a></h4>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;Page Header区域是放置有哪些列，列名是什么。设计时一定要确保
+    列的高度和Page Header区域的高度一致。<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;Detail 1区域是放置列的值，里面用动态字段表示。设计时一定要确保
+    列的高度和Detail 1区域的高度一致。否则编译不通过，还有可能无法循环打印出多条数据。</p>
+<h4><a href="#jasper打印时到底是用那个文件" id="jasper打印时到底是用那个文件">jasper打印时到底是用那个文件</a></h4>
+<p><strong>&nbsp;&nbsp;&nbsp;&nbsp;.jrxml和.jasper文件的区别</strong>：<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;  .jrxml是源文件，里面定义一系列的标签用于封装数据视图结构，
+    就像一个HTML文件，但区别于HTML文件的是他不能在浏览器中预览。<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;  .jasper是将.jrxml文件翻译后的文件，也是项目中真正用到的文件，
+    如果只用.jrxml文件还需在项目中调用jasper提供的类方法翻译成.jasper文件</p>
+<h4><a href="#pdf打印时中文页面报错" id="pdf打印时中文页面报错">pdf打印时中文页面报错</a></h4>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;  网上都说是jar包问题，确实是，但不需要像网上说的那样去重新编译jar包，
+    只需将安装ireport软件中D:\iReport-5.6.0\ireport\modules\ext\iTextAsian.jar添加到项目中，
+    并且添加到ireport的classpath中，重启ireport软件，最后重新编译出.jasper文件放入项目中，重启服务即可。</p>
+<h4><a href="#maven方式将itextasianjar打入到本地仓库" id="maven方式将itextasianjar打入到本地仓库">maven方式将iTextAsian.jar打入到本地仓库</a></h4>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;  先将jar包放到一个比较方便的位置，免得cd时多打字，呵呵。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;  比如：d:\report&gt;mvn install:install-file -Dfile=iTextAsian.jar -DgroupId=com.gordon
+    -DartifactId=pdf-iTextAsian -Dversion=5.6.0 -Dpackagin=jar</p>
+<pre><code>&lt;!--导出pdf中文显示依赖--&gt;
+&lt;dependency&gt;
+      &lt;groupId&gt;com.gordon&lt;/groupId&gt;
+      &lt;artifactId&gt;pdf-iTextAsian&lt;/artifactId&gt;
+      &lt;version&gt;5.6.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<h4><a href="#解决项目启动报错但却没有详细信息" id="解决项目启动报错但却没有详细信息">解决项目启动报错但却没有详细信息</a></h4>
+<p>在resource目录下新建logging.properties并加入如下代码，tomcat就会打印出详细信息</p>
+<pre><code>handlers = org.apache.juli.FileHandler, java.util.logging.ConsoleHandler
+
+############################################################
+# Handler specific properties.
+# Describes specific configuration info for Handlers.
+############################################################
+
+org.apache.juli.FileHandler.level = FINE
+org.apache.juli.FileHandler.directory = ${catalina.base}/logs
+org.apache.juli.FileHandler.prefix = error-debug.
+
+java.util.logging.ConsoleHandler.level = FINE
+java.util.logging.ConsoleHandler.formatter = java.util.logging.SimpleFormatter
+</code></pre>
+<p><img src="F://WorkSpace//IDEA_Space//Test//jasperReport//maven_install.png" alt="maven_install" class="absent" /></p>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

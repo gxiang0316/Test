@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.gordon"/>
+
+    <!--配置BrokerService
+        只需启动spring容器即可创建出一个单例的broker
+        ApplicationContext context =
+                new ClassPathXmlApplicationContext("applicationContext.xml");
+    -->
+    <!--<bean id="broker" class="org.apache.activemq.broker.BrokerService"
+                                    init-method="start" destroy-method="stop">
+        <property name="brokerName" value="myBroker"/>
+        <property name="persistent" value="false"/>
+        <property name="transportConnectorURIs">
+            <list>
+                <value>tcp://localhost:61616</value>
+            </list>
+        </property>
+    </bean>-->
+
+    <!--配置生产者  JmsTemplate是Spring提供的JMS工具类，它可以进行消息发送、接收等-->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <!--连接工厂-->
+        <property name="connectionFactory" ref="jmsFactory"/>
+        <!--消息类型-->
+        <property name="defaultDestination" ref="queue"/>
+        <!--消息转换器MessageConverter  详解：http://elim.iteye.com/blog/1900937-->
+        <property name="messageConverter">
+            <bean class="org.springframework.jms.support.converter.SimpleMessageConverter"/>
+        </property>
+    </bean>
+
+    <!--activeMq连接池-->
+    <bean id="jmsFactory"
+          class="org.apache.activemq.jms.pool.PooledConnectionFactory" destroy-method="stop">
+        <!--连接工厂 真正可以产生Connection的ConnectionFactory-->
+        <property name="connectionFactory">
+            <bean class="org.apache.activemq.ActiveMQConnectionFactory">
+                <property name="brokerURL">
+                    <value>tcp://192.168.157.4:61616</value>
+                </property>
+            </bean>
+        </property>
+        <!--最大连接数-->
+        <property name="maxConnections" value="100"/>
+    </bean>
+
+    <!--topic消息类型-->
+    <bean id="topic" class="org.apache.activemq.command.ActiveMQTopic">
+        <!--constructor-arg：通过构造函数注入 index="0"表示第一个参数-->
+        <constructor-arg index="0" value="spring-topic"/>
+    </bean>
+
+    <!--ptp消息类型-->
+    <bean id="queue" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="spring-queue"/>
+    </bean>
+
+    <!-- 配置消费者 -->
+    <bean id="jmsContainer"
+          class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <!--表示监听的是哪个ConnectionFactory-->
+        <property name="connectionFactory" ref="jmsFactory"/>
+        <!--监听什么的Destination-->
+        <property name="destination" ref="queue"/>
+        <!--接收到消息以后进行消息处理的MessageListener-->
+        <property name="messageListener" ref="messageListener"/>
+    </bean>
+
+    <bean id="messageListener" class="com.gordon.basis.CustomMessageListener"/>
+
+</beans>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--1.配置SpringMVC注解扫描的Control组件-->
+    <context:component-scan base-package="com.gordon.jasper.controller" use-default-filters="false">
+        <!--配置只扫描contorller层-->
+        <context:include-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller" />
+        <!--配置只扫描service层-->
+        <context:include-filter type="annotation"
+                                expression="org.springframework.stereotype.Service" />
+    </context:component-scan>
+    <!--use-default-filters="false": https://blog.csdn.net/u014520797/article/details/50667720-->
+
+    <!--2.1 配置SpringMVC视图-->
+    <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="order" value="2"></property>
+        <property name="prefix" value="/WEB-INF/jsp/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+    <!--自定义视图：http://martinwuje.iteye.com/blog/1872952-->
+
+    <!--2.2 配置IReport报表视图-->
+    <!--JasperReportsViewResolver只关心根据逻辑视图名到指定位置查找JasperReport类型模板文件，
+        并返回AbstractJasperReportsView的具体子类型View实例，
+        例如JasperReportsCsvView或者JasperReportsHtmlView等。
+        注意：spring-mvc 5.x 以上没有这个类
+    -->
+    <bean id="jasperReportsViewResolver" class="org.springframework.web.servlet.view.jasperreports.JasperReportsViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.jasperreports.JasperReportsMultiFormatView"></property>
+        <property name="prefix" value="/WEB-INF/jasper/"></property>
+        <property name="suffix" value=".jasper"></property>
+        <property name="contentType" value="text/html"></property>
+        <!--报表数据源的Key名称需要注意，固定就是reportDataKey-->
+        <property name="reportDataKey" value="jrDatasource"></property>
+        <!--当有多个视图解析器时，order:表示解析顺序-->
+        <property name="order" value="1"></property>
+        <!--注意：像InternalResourceViewResolver这种能解析所有的视图，
+                 即永远能返回一个非空View对象的ViewResolver一定要把它放在ViewResolver链的最后面-->
+
+        <!--配置解析视图时的参数，下面这个是html时的参数。也可以成其他格式的，
+            如：xls文件的参数:xxx.JRXlsExporterParameter.xxx -->
+        <property name="exporterParameters">
+            <map>
+                <!-- 指定格式报表的内容编码 -->
+                <entry key="net.sf.jasperreports.engine.JRExporterParameter.CHARACTER_ENCODING">
+                    <value>UTF-8</value>
+                </entry>
+                <!-- keine Images als Platzhalter in HTML-Seiten , vermeidet nullpx-Problem -->
+                <!-- 通过html访问时，避免图像占位符出现一些nullpx -->
+                <entry key="net.sf.jasperreports.engine.export.JRHtmlExporterParameter.IS_USING_IMAGES_TO_ALIGN">
+                    <value type="java.lang.Boolean">false</value>
+                </entry>
+                <!--
+                 通过Web访问时图片的URI
+                 会自动生成:img_0_0_xx.png图片地址信息
+                 -->
+                <!--设置图片以流的形式加载后就不需要这样了-->
+                <!--<entry key="net.sf.jasperreports.engine.export.JRHtmlExporterParameter.IMAGES_URI">
+                    <value type="java.lang.String">/jasperReport/image?image=</value>
+                </entry>-->
+                <!-- 图片目录的绝对路径 -->
+                <!-- <entry key="net.sf.jasperreports.engine.export.JRHtmlExporterParameter.IMAGES_DIR_NAME">
+                    <value type="java.lang.String">D:\\work\\***\\framework\\tmp</value>
+                </entry> -->
+                <!-- 是否输出图片到目录 -->
+                <!-- <entry key="net.sf.jasperreports.engine.export.JRHtmlExporterParameter.IS_OUTPUT_IMAGES_TO_DIR">
+                    <value type="java.lang.String">true</value>
+                </entry>  -->
+            </map>
+        </property>
+    </bean>
+
+    <!--3.静态资源处理-->
+    <mvc:default-servlet-handler />
+    <!--也可以使用<mvc:resource /> 它们的区别是：https://www.cnblogs.com/dflmg/p/6393416.html-->
+
+
+    <!--4.注解驱动-->
+    <mvc:annotation-driven></mvc:annotation-driven>
+
+
+</beans>

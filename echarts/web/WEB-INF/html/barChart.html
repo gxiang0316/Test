@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../lib/echarts.min.js"></script>
+    <!-- 引入echarts主题js-->
+    <script src="../lib/theme/macarons.js"></script>
+</head>
+<body>
+<!-- 为Echarts准备一个具备大小(宽高)的DOM容器-->
+<div id="lineChart" style="width: 600px; height: 400px;"></div>
+
+<script type="text/javascript">
+    // 基于准备好的DOM，初始化echarts实例，第二个参数是主题的名字，在macarons.js中定义的
+    var echart = echarts.init(document.getElementById("lineChart"),"macarons");
+
+    // 指定图表的配置项和数据。所有配置项示例查找：http://www.echartsjs.com/option.html#title
+    var option = {
+        legend: {},
+        xAxis: {
+            data: ['1','2','3','4','5','6'],
+            splitLine:{show:false},// 去掉网格线
+            splitArea : {show : true}//保留网格区域
+        },
+        yAxis: [{
+            min: 5000000,
+            splitLine:{show:false},// 去掉网格线
+            splitArea : {show : true}//保留网格区域
+        }, {
+        }],
+        legend:{
+            data:['整数','小数']
+        },
+        grid: {
+            borderWidth:0,
+            backgroundColor:'rgb(128, 128, 128)',
+            left: 100
+        },
+        series: [
+            {
+                name: '整数',
+                type: 'bar',
+                data: [5590986,5644154,5682473,5709709,5748763,5770601],
+                animation: true
+            },
+            {
+                name: '小数',
+                type: 'bar',
+                yAxisIndex: 1,// 使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用
+                data: [1.1496899,0.9420012,0.6743367,0.47701207,0.67934614,0.37843546]
+            }
+            /*{
+                name:'降水量',
+                type:'bar',
+                data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7],
+                markPoint : {
+                    data : [
+                        {name : '年最高', value : 182.2, xAxis: 7, yAxis: 183, symbolSize:18},
+                        {name : '年最低', value : 2.3, xAxis: 11, yAxis: 3}
+                    ]
+                },
+                markLine : {
+                    data : [
+                        {type : 'average', name : '平均值'}
+                    ]
+                }
+            }*/
+        ]
+    };
+
+    echart.setOption(option);
+</script>
+
+</body>
+</html>

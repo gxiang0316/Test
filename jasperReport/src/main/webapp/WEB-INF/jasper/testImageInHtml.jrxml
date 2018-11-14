@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="testImageInHtml" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="93689ec9-4b8f-4522-8673-430e0e6143a2">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="class" class="java.lang.String"/>
+	<parameter name="createDate" class="java.lang.String"/>
+	<parameter name="imageURL" class="java.lang.String"/>
+	<parameter name="img" class="java.io.InputStream"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="course" class="java.lang.String"/>
+	<field name="score" class="java.lang.Double"/>
+	<variable name="score" class="java.lang.Double" resetType="Group" resetGroup="groupById" calculation="Sum">
+		<variableExpression><![CDATA[$F{score}]]></variableExpression>
+	</variable>
+	<group name="groupById">
+		<groupExpression><![CDATA[$F{id}]]></groupExpression>
+		<groupHeader>
+			<band height="39">
+				<textField>
+					<reportElement x="0" y="0" width="152" height="39" uuid="f212cb01-b0fb-485f-ac78-78366e450365"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="39">
+				<textField>
+					<reportElement x="421" y="0" width="134" height="39" uuid="4dfd851b-117b-4dbf-81a8-9d1356a95085"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" isBold="true" isItalic="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{score}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="374" y="0" width="47" height="39" uuid="e43c95a0-3e3d-461c-9c5f-ca040e3cc50a"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[总分：]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="224" y="33" width="207" height="46" uuid="9ea62872-3f22-4bc8-9990-293480af6506"/>
+				<textElement>
+					<font size="18" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[学生成绩表]]></text>
+			</staticText>
+			<image>
+				<reportElement x="22" y="11" width="100" height="50" uuid="f404433c-0153-43cd-a766-dd2b8406b6ce"/>
+				<imageExpression><![CDATA[$P{imageURL}]]></imageExpression>
+			</image>
+			<image isUsingCache="true">
+				<reportElement x="447" y="11" width="100" height="50" uuid="dc145ea5-fbf8-4f56-999b-e2f30ab8d2be"/>
+				<imageExpression><![CDATA[$P{img}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement x="76" y="0" width="100" height="35" uuid="c7601b6a-04a3-47ff-a289-a22a2cc2291b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{class}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="76" height="35" uuid="14f3da4b-6d75-48eb-a6c2-fbad965569d5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[班级：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="374" y="0" width="73" height="35" uuid="251f9c62-885e-4660-954f-384f0a8c1322"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[制作日期：]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="447" y="0" width="108" height="35" uuid="680d18c5-9f7e-4ba1-a527-7c545bf8214f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{createDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="39" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="152" height="39" uuid="20fe3cca-e200-4e2e-8e45-abe7bb4a3290"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[学号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="152" y="0" width="129" height="39" uuid="76173c67-e9f5-41ed-b31c-7483078441e7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[姓名]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="0" width="140" height="39" uuid="d7ac377e-4c9e-4de9-89b9-edbebdeb17c3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[课程]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="421" y="0" width="134" height="39" uuid="4013cc12-24b8-4ccd-9d6e-d823ed87f0f3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[分数]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<textField>
+				<reportElement x="152" y="0" width="129" height="40" uuid="e986f380-cdd4-4740-a353-464105b57e8c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="281" y="0" width="140" height="40" uuid="f481c124-5fd0-4fed-9cf2-fd765fac879a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{course}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="421" y="0" width="134" height="40" uuid="96d9e6db-2c7e-4a95-aac5-3b89bfe937ef"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{score}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

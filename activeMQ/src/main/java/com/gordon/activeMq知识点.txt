@@ -1,0 +1,54 @@
+消息持久化：
+    // producer.setDeliveryMode(DeliveryMode.PERSISTENT);将消息传递特性置为持久化
+    deliveryMode的是否持久化是针对activeMQ服务器是否重启而言的。
+    对于不支持持久化的设置，当mq重启之后，没有被消费的消息就会丢失。
+    而支持持久化的设置，只要消息没有被消费，重启mq，仍然能被新加入的consumer消费。
+    activeMq默认使用KahaDB做持久化，也可以使用数据库方式
+
+Session事务：
+    connection.createSession(Boolean.FALSE, Session.AUTO_ACKNOWLEDGE);
+    第一个参数：是否开启事务 ， 第二个参数：消息签收模式
+    因为Session非线程安全，那么当前session下所有的consumer都会共享同一个transactionContext；
+    同时建议，一个事务类型的Session中只有一个Consumer，
+    以避免rollback()或者commit()方法被多个consumer调用而造成的消息混乱。
+
+消息ACK签收机制：
+    JMS消息只有在被确认之后，才认为已经被成功地消费了。消息的成功消费通常包含三个阶段：
+        1、客户接收消息
+        2、客户处理消息
+        3、消息被确认
+    在事务性会话中，当一个事务被提交的时候，确认自动发生。
+    在非事务性会话中，消息何时被确认取决于创建会话时的签收模式(acknowledgement mode)。
+    该参数有以下三个可选值：
+        Session.AUTO_ACKNOWLEDGE 当客户成功的从receive方法返回的时候或者从MessageListener.onMessage方法成功返回的时候，会话自动确认
+        Sessiion.TRANSACTION 用session.commit()进行签收 ，
+            要么全部正常确认，要么全部redelivery。这种严谨性，通常在基于GROUP(消息分组)或者其他场景下特别适合。
+        Session.CLIENT_ACKNOWLEDGE 客户通过消息的acknowledge方法确认消息
+            开发者需要需要关注几个方法：
+                1) message.acknowledge()，
+                2) ActiveMQMessageConsumer.acknowledege()，
+                3) ActiveMQSession.acknowledge()；
+                其1)和3)是等效的，将当前session中所有consumer中尚未ACK的消息都一起确认，
+                2)只会对当前consumer中那些尚未确认的消息进行确认。
+            通常会在基于Group(消息分组)情况下会使用CLIENT_ACKNOWLEDGE，
+            我们将在一个group的消息序列接受完毕之后确认消息(组)；不过当你认为消息很重要，
+            只有当消息被正确处理之后才能确认时，也可以使用此模式  。
+
+负载均衡：
+    Message Groups特性是一种负载均衡的机制。在一个消息被分发到consumer之前，
+    broker首先检查消息JMSXGroupID属性。如果存在，那么broker会检查是否有某个consumer拥有这个message group。
+    如果没有，那么broker会选择一个consumer，并将它关联到这个message group。
+    此后，这个consumer会接收这个message group的所有消息，直到：
+    Consumer被关闭
+    Message group被关闭，通过发送一个消息，并设置这个消息的JMSXGroupSeq为-1
+    如下配置：
+        bytesMessage.setStringProperty("JMSXGroupID", "constact-20100000002");
+        bytesMessage.setIntProperty("JMSXGroupSeq", -1);
+
+
+
+
+
+
+
+

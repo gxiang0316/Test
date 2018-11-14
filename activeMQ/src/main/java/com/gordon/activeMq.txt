@@ -1,0 +1,42 @@
+
+activeMq基础系列文章：https://www.cnblogs.com/HigginCui/category/955998.html
+
+activeMq性能优化系列文章：https://blog.csdn.net/yinwenjie/article/details/50916518
+
+activeMq消息机制以及ACK机制详解：http://shift-alt-ctrl.iteye.com/blog/2020182
+
+activeMq高并发下错误处理：https://blog.csdn.net/wsyyyyy/article/details/79888521
+
+activeMq设置多消费者：https://blog.csdn.net/super_scan/article/details/39839145
+
+activeMq连接池：https://www.cnblogs.com/dead-trap-ramble/archive/2013/11/30/3450745.html
+    http://cuisuqiang.iteye.com/blog/1329455
+    http://www.qingpingshan.com/rjbc/java/258107.html 有代码
+
+activeMq面试题：https://blog.csdn.net/belvine/article/details/79399798
+
+activeMq端口：8161(web管理页面端口）、61616（activemq服务监控端口）
+
+activeMq默认登录账号密码：admin  admin
+
+消息发布的两种方式：
+    topic：广播形式   一个消息发布者可以通知多个消息消费者
+    ptp：点对点形式   一个消息发布者对应一个消息消费者
+
+activeMq web Queues控制台：
+    Number of Pending Message：等待消费的队列
+    Number of Consumers ：该队列被多少个消费者消费
+    Message Enqueued ：进入队列的消息总数量(只增不减)
+    Message Dequeued ：出了队列的消息总数量(即被消费了的消息数量)
+
+
+activeMq 常见问题解决：https://blog.csdn.net/niwei3527/article/details/80607550
+
+activeMq是如何接收消息的：http://manzhizhen.iteye.com/category/318342
+    两种方式：同步(receiver()方法)  异步(创建监听器)
+    同一个session下面不能同时存在同步接收和异步接收，只能用一种方式
+
+
+
+
+

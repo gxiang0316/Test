@@ -1,0 +1,37 @@
+FreeMarker是什么：
+    FreeMarker是一款模板引擎： 即一种基于模板和要改变的数据，
+    并用来生成输出文本（HTML网页、电子邮件、配置文件、源代码等）的通用工具。
+    它不是面向最终用户的，而是一个Java类库，是一款程序员可以嵌入他们所开发产品的组件。
+    FreeMarker是免费的，基于Apache许可证2.0版本发布。
+    其模板编写为FreeMarker Template Language（FTL），
+    属于简单、专用的语言。需要准备数据在真实编程语言中来显示，
+    比如数据库查询和业务运算，	之后模板显示已经准备好的数据。
+    在模板中，主要用于如何展现数据，	而在模板之外注意于要展示什么数据
+
+
+使用方法：http://relive123-yahoo-com-cn.iteye.com/blog/818013
+
+应用场景：
+    1、页面静态化应用
+        如：比较适合运用在访问量大（或页面数据量大），
+           但是数据很少与后台进行交互（即对实时性要求不是很高的）的页面，
+           比如商品网站上的商品详情页等。
+    2、导出word、ppt、excel等复杂性的文档
+
+    http://itindex.net/detail/54559-freemarker-jsp
+    https://www.cnblogs.com/markjiao/p/7904586.html
+
+freemarker流程：
+    1、由于完全支持jsp标签，所以可以直接使用jsp页面改造
+    2、代码运行后生成html文件并存放在服务器中，
+        然后通过直接访问这个静态文件来加快响应效率。
+  注意：freemarker模板中使用的是freemarker语法而不是jsp语法，
+       因此EL，JSTL语法都不适用于模板上，但语法有很多相似之处。
+
+
+前景：
+    SpringBoot中也有集成FreeMarker模板引擎，当然默认是Thymeleaf模板引擎
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-freemarker</artifactId>
+    </dependency>

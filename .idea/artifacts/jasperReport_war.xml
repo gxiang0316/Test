@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="jasperReport:war">
+    <output-path>$PROJECT_DIR$/jasperReport/target</output-path>
+    <root id="archive" name="com.gordon.jasper.war">
+      <element id="artifact" artifact-name="jasperReport:war exploded" />
+    </root>
+  </artifact>
+</component>

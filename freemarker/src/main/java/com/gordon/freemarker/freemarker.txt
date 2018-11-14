@@ -1,0 +1,21 @@
+简介：
+    FreeMarker 是一个模板引擎，一个基于模板生成文本输出的通用工具，
+使用纯 Java 编写，FreeMarker 被设计用来生成 HTML Web 页面，
+特别是基于 MVC 模式的应用程序，虽然 FreeMarker 具有一些编程的能力，
+但通常由 Java 程序准备要显示的数据，由FreeMarker 生成页面，通过模板显示准备的数据
+
+    FreeMarker 不是一个 Web 应用框架，而适合作为 Web 应用框架一个组件。
+FreeMarker 与容器无关，因为它并不知道 HTTP 或 Servlet；FreeMarker
+同样可以应用于非Web应用程序环境，FreeMarker 更适合作为 Model2 框架（如 Struts）的视图组件，
+你也可以在模板中使用 JSP标记库。
+
+应用场景：
+    比较适合运用在访问量大（或页面数据量大），
+但是数据很少与后台进行交互（即对实时性要求不是很高的）的页面，
+比如商品网站上的商品详情页等。
+
+为什么要使用freemarker:
+    http://itindex.net/detail/54559-freemarker-jsp
+    https://www.cnblogs.com/markjiao/p/7904586.html
+
+
