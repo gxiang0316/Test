@@ -1,0 +1,11 @@
+public interface PasswordService {
+    //输入明文密码得到密文密码
+    String encryptPassword(Object plaintextPassword) throws IllegalArgumentException;
+}
+PasswordService 默认实现类 DefaultPasswordService
+
+public interface CredentialsMatcher {
+    //匹配用户输入的token的凭证（未加密）与系统提供的凭证（已加密）
+    boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info);
+}
+CredentialsMatcher 默认实现类 PasswordMatcher及HashedCredentialsMatcher（更强大）

@@ -1,0 +1,246 @@
+INI配置文件是一种key/value的键值对配置，提供了分类的概念，每一个类中的key不可重复，
+#号代表注释，shiro.ini文件默认在/WEB-INF/ 或classpath下,shiro会自动查找，
+INI配置文件一般适用于用户少且不需要在运行时动态创建的情景下使用。
+
+
+1.在web.xml中配置shiro的过滤器
+
+
+要使用Shiro必须在web.xml中配置shiro,在web.xml 中自定义shiro.ini位置（默认位置）
+/WEB-INF/shiro.ini or classpath:shiro.ini， 加入以下内容:
+
+    <filter>
+        <filter-name>ShiroFilter</filter-name>
+        <filter-class>org.apache.shiro.web.servlet.IniShiroFilter</filter-class>
+        <init-param>
+            <param-name>configPath</param-name>
+            <param-value>/WEB-INF/shiro.ini</param-value>
+        </init-param>
+    </filter>
+
+
+2.shiro.ini示例
+
+    用户
+    [users]
+    #用户zhang的密码是123，此用户具有role1和role2两个角色
+    zhang=123,role1,role2
+    wang=123,role2
+
+    #权限
+    [roles]
+    #角色role1对资源user拥有create、update权限
+    role1=user:create,user:update
+    #角色role2对资源user拥有create、delete权限
+    role2=user:create,user:delete
+    #角色role3对资源user拥有create权限
+    role3=user:create
+
+
+ini配置中主要配置有四大类：main，users，roles，urls
+
+    [main]
+    #提供了对根对象 securityManager 及其依赖的配置
+    securityManager=org.apache.shiro.mgt.DefaultSecurityManager
+    …………
+    securityManager.realms=$jdbcRealm
+
+    [users]
+    #提供了对用户/密码及其角色的配置，用户名=密码，角色 1，角色 2
+    username=password,role1,role2
+
+
+    [roles]
+    #提供了角色及权限之间关系的配置，角色=权限 1，权限 2
+    role1=permission1,permission2
+
+
+    [urls]
+    #用于 web，提供了对 web url 拦截相关的配置，url=拦截器[参数]，拦截器
+    /index.html = anon
+    /admin/** = authc, roles[admin], perms["permission1"]
+
+
+1、[main]
+
+
+main主要配置shiro的一些对象，例如securityManager ，Realm，authenticator，authcStrategy 等等,例如
+
+    #声明一个realm
+    MyRealm1=com.shiro.mutilrealm.MyRealm1
+    MyRealm2=com.shiro.mutilrealm.MyRealm2
+
+    #配置验证器
+    authenticator = org.apache.shiro.authc.pam.ModularRealmAuthenticator
+
+    # AllSuccessfulStrategy 表示 MyRealm1和MyRealm2 认证都通过才算通过
+    #配置策略
+    #authcStrategy = org.apache.shiro.authc.pam.AllSuccessfulStrategy
+    authcStrategy = com.shiro.authenticationstrategy.MyAuthenticationStrategy
+
+
+    #将验证器和策略关联起来
+    authenticator.authenticationStrategy = $authcStrategy
+
+
+    #配置验证器所使用的Realm
+    authenticator.realms=$MyRealm2,$MyRealm1
+
+    #把Authenticator设置给securityManager
+    securityManager.authenticator = $authenticator
+
+
+除了对象之外，也可以使用byte数组，集合，map等等
+
+例如：
+
+byte数组
+
+
+authenticator.bytes=0x68656c6c6f69
+
+
+集合
+
+    authenticator.array=1,2,3
+    securityManager.sessionManager.sessionListeners = $sessionListener1,$sessionListener2
+
+
+map(键值对使用冒号来限定 key:value)
+
+authenticator.map=$jdbcRealm:$jdbcRealm,1:1,key:abc
+
+
+在web应用中，我们可以进行以下配置，表示如果用户没有登录进行访问时，将自动跳转到/login页面
+
+authc.loginUrl=/login
+
+
+
+2、[users]
+
+
+[users]允许你配置一组静态的用户，包含用户名，密码，角色，一个用户可以有多个角色，可以配置多个角色，例如:
+
+
+username = password, roleName1, roleName2, …, roleNameN
+
+
+这里涉及到密码，就牵扯到加密的问题，我们可以MD5，Sha1，Sha256等算法进行加密
+
+
+    [main]
+
+    #告诉shiro我们用哪个加密算法
+    sha256Matcher = org.apache.shiro.authc.credential.Sha256CredentialsMatcher
+    iniRealm.credentialsMatcher = $sha256Matcher
+
+    [users]
+
+    #用户名=密码，角色
+    admin=355b1bbfc96725cdce8f4a2708fda310a80e6d13315aec4e5eed2a75fe8032ce,role1
+
+
+获取密码的 hex 加密字符串
+
+String ss = new Sha256Hash("cc").toHex();
+
+
+
+3、[roles]
+
+
+[roles]将角色和权限关联起来，格式为：角色名=权限字符串1，权限字符串2…..，例如
+
+
+role1 = printer:create,printer:query
+
+
+限标识符号规则：【中间用“:”（半角冒号分隔）】
+
+
+        |---资源:操作【user:create：表示对用户资源进行create操作】【等价于：user:create:*（对所有的用户实例进行操作）】
+        |---资源:操作:实例【user:create:01：表示对用户资源的01实例进行create操作】
+        |---例子：【user:*:01 表示对用户资源的01实例进行所有操作】
+
+
+权限表示的几种方式：
+
+
+（1）用简单的字符串来表示一个权限，如：user （相当于：user:*）
+
+
+（2）多层次管理
+
+
+2.1 printer:print
+
+
+其中第一部分是权限被操作的领域（打印机），第二部分是被执行的操作
+
+
+2.2 多个值
+
+
+多个值使用逗号隔开，如role1 = fendo:create,fendo:query
+不一定要xxx:yyyy的形式，也可以直接使用简单字符串
+
+
+2.3 可以使用*号表示所有
+
+
+比如printer:* ，表示你可以对打印机进行任何操作，
+或者使用 *:query ，表示你在任何领域下，都有查询操作
+
+
+（3）实例级权限：域：操作：实例
+
+
+如：user:edit:manager 只能对 user 中的 manager 进行 edit。
+
+通配符：user:edit:*、user:*:*、user:*:manager
+
+等价：user:edit==user:edit:*、user == user:*:* 只能从字符串结尾处省略。
+
+
+注意：
+
+　　　　如果一个独立的 permissionDefinition 需要被内部逗号分隔（例如，printer:5thFloor:print,info），则需要用户双引号环绕该定义，以避免错误解析。　　
+
+　　　　如果角色不想关联权限，则不需要在 [roles] 部分把它们列出来。只需定义在 [user] 部分中定义角色名就足以创建尚不存在的角色。
+
+　　　　仅定义非空的 [users] 或 [roles] 部分就将自动地触发org.apache.shiro.realm.text.IniRealm 实例的创建
+
+
+4、[urls]
+
+
+这部分配置主要在web应用中，格式为：url=拦截器[参数]，拦截器[参数]……，例如
+
+
+    /login=anon
+    /unauthorized=anon
+    /static/**=anon
+    /authenticated=authc
+    /role=authc,roles[admin]
+    /permission=authc,perms["user:create"]
+
+
+说明:
+
+
+    anon: 表示匿名访问，即不需要登录就可以访问，例如/login这个路径可以匿名访问
+    authe: 表示需要登录才能访问
+    roles[admin]: 表示有admin这个角色的用户才能访问
+    perms["user:create"]: 表示有这个权限的才能访问
+
+
+url通配符语法:
+
+
+    ?：匹配一个字符
+    *：匹配零个或多个字符
+    **：匹配零个或多个路径
+
+
+url匹配顺序是按照你配置的顺序
