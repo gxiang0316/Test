@@ -16,9 +16,9 @@ public interface UserDao {
     /**删除用户*/
     void deleteUser(User user);
     /**给用户添加角色*/
-    void addRoleToUser(Long userId,Long... roleId);
+    void addRoleToUser(Long userId, Long... roleId);
     /**删除用户拥有的角色*/
-    void deleteRoleToUser(Long userId,Long... roleId);
+    void deleteRoleToUser(Long userId, Long... roleId);
     /**通过id获取用户*/
     User findUserById(Long userId);
     /**通过用户名获取用户*/

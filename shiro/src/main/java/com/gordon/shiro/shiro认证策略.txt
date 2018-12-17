@@ -40,3 +40,4 @@ ModularRealmAuthenticator默认使用AtLeastOneSuccessfulStrategy策略。
     所有每次都通过接口将相应的认证信息传入下一次流程；
     通过如上接口可以进行如合并/返回第一个验证成功的认证信息。
 
+https://blog.csdn.net/rongku/article/details/51336424

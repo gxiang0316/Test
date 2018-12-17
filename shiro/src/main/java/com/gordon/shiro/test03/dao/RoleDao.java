@@ -11,7 +11,7 @@ public interface RoleDao {
     /**删除角色*/
     void deleteRole(Long roleId);
     /**给角色添加权限*/
-    void addPermissionToRole(Long roleId,Long... permissionId);
+    void addPermissionToRole(Long roleId, Long... permissionId);
     /**删除角色拥有的权限*/
-    void deletePermissionToRole(Long roleId,Long... permissionId);
+    void deletePermissionToRole(Long roleId, Long... permissionId);
 }

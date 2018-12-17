@@ -80,7 +80,7 @@ public class AuthenticatorStrategyTest {
                 new IniSecurityManagerFactory(configFile);
 
         //2、得到SecurityManager实例 并绑定给SecurityUtils
-        org.apache.shiro.mgt.SecurityManager securityManager = factory.getInstance();
+        SecurityManager securityManager = factory.getInstance();
         SecurityUtils.setSecurityManager(securityManager);
 
         //3、得到Subject及创建用户名/密码身份验证Token（即用户身份/凭证）
